@@ -11,8 +11,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 // Função para buscar os funcionários da API
 function fetchEmployees() {
     return __awaiter(this, void 0, void 0, function* () {
-        const response = yield fetch("http://localhost:3000/employees");
-        return response.json();
+        try {
+            const response = yield fetch("http://localhost:3000/employees");
+            const employees = yield response.json();
+            console.log("Dados recebidos da API:", employees); // Verificar se os dados estão chegando
+            renderTable(employees);
+            return employees;
+        }
+        catch (error) {
+            console.error("Erro ao buscar funcionários:", error);
+            return [];
+        }
     });
 }
 // Função para formatar a data
@@ -26,7 +35,7 @@ function formatPhone(phone) {
 }
 // Função para renderizar a tabela
 function renderTable(employees) {
-    const tableBody = document.querySelector("#employee-table tbody");
+    const tableBody = document.querySelector("#table-body");
     tableBody.innerHTML = "";
     employees.forEach(employee => {
         const row = document.createElement("tr");

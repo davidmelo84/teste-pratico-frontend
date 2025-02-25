@@ -10,8 +10,18 @@ type Employee = {
 
 // Função para buscar os funcionários da API
 async function fetchEmployees(): Promise<Employee[]> {
-    const response = await fetch("http://localhost:3000/employees");
-    return response.json();
+    try {
+        const response = await fetch("http://localhost:3000/employees");
+        const employees: Employee[] = await response.json();
+        
+        console.log("Dados recebidos da API:", employees); // Verificar se os dados estão chegando
+
+        renderTable(employees);
+        return employees;
+    } catch (error) {
+        console.error("Erro ao buscar funcionários:", error);
+        return [];
+    }
 }
 
 // Função para formatar a data
@@ -27,7 +37,7 @@ function formatPhone(phone: string): string {
 
 // Função para renderizar a tabela
 function renderTable(employees: Employee[]) {
-    const tableBody = document.querySelector("#employee-table tbody") as HTMLTableSectionElement;
+    const tableBody = document.querySelector("#table-body") as HTMLTableSectionElement;
     tableBody.innerHTML = "";
 
     employees.forEach(employee => {
